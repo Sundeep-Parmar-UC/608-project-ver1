@@ -60,7 +60,7 @@ create database
 
 -- under database-1,  connectivity & security 
 -- copy connection string for later
---  eg: mysql -h database-1.clqxqhhe6wft.us-east.......
+-- example: mysql -h database-1.clqxqhhe6wft.us-east.......
 
 -------------- setup Jupyter Lab
 
@@ -78,10 +78,12 @@ sudo mkfs -t xfs /dev/nvme1n1
 sudo mkdir /data
 sudo mount /dev/nvme1n1 /data
 sudo blkid /dev/nvme1n1
+--- copy UUID: replace {{copied UUID}} below
+
 sudo cp /etc/fstab /etc/fstab.bak
 sudo vim /etc/fstab
---- copy UUID
---- added line to file: UUID={{copied UUID}}  /data  xfs  defaults,nofail  0  2
+
+--- added line to file->: UUID={{copied UUID}}  /data  xfs  defaults,nofail  0  2
 
 sudo ln -s /data data
 sudo chown -h ubuntu data
@@ -118,11 +120,8 @@ cd
 ---- run entire notebook
 
 
-
----- run webpage for Data Ingestion and Training  from another putty session
+--- open another putty session, run Data Ingestion and Training with command below
+cd
 ./startpage.sh ingest.py
-
-
-
 
 
