@@ -77,13 +77,18 @@ sudo file -s /dev/nvme1n1
 sudo mkfs -t xfs /dev/nvme1n1
 sudo mkdir /data
 sudo mount /dev/nvme1n1 /data
+sudo blkid /dev/nvme1n1
+sudo cp /etc/fstab /etc/fstab.bak
+sudo vim /etc/fstab
+--- copy UUID
+--- added line to file: UUID={{copied UUID}}  /data  xfs  defaults,nofail  0  2
+
 sudo ln -s /data data
 sudo chown -h ubuntu data
 sudo chown -h ubuntu /data
 	
 
 -------------- install Flask
-cd flask_app
 python3 -m venv venv
 source venv/bin/activate
 python3 -m pip install mysql-connector-python
@@ -97,9 +102,9 @@ git clone https://github.com/Sundeep-Parmar-UC/608-project-ver1.git
 cd 608-project-ver1
 mv * ..
 cd ..
-cd.mv runLab.sh ../../..
-mv startpage.sh ../../..
-cd ../../..
+mv runLab.sh ../..
+mv startpage.sh ../..
+cd ../..
 chmod +x runLab.sh
 chmod +x startpage.sh
 
