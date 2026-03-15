@@ -1,0 +1,123 @@
+-----------create EC2
+Launch an instance
+Name
+DataIngest
+
+Quick start
+Ubuntu
+
+Instance type
+t3.micro
+
+Key Pair (login)
+Key Pair name
+- Data608-Sundeep
+
+Network Settings
+Create security group
+
+Configure storage
+8GB
+
+click - Launch Instance
+
+------------------------ create RDS
+search Aurora and RDS
+create database
+
+full configuration
+
+engine options
+MySQL
+
+Templates
+Sandbox
+
+Availability and durability
+Single-AZ
+
+DB instance identifier
+database-1
+
+Master password
+Data608-Project
+
+confirm master password
+Data608-Project
+
+
+Allocated storage
+<20>
+
+Compute resource
+Connect to an EC2 compute Resource
+
+EC2 instance
+Datagest
+
+
+create database
+
+-- under database-1,  connectivity & security 
+-- copy connection string for later
+--  eg: mysql -h database-1.clqxqhhe6wft.us-east.......
+
+-------------- setup Jupyter Lab
+
+sudo apt update
+sudo apt install python3
+sudo apt upgrade python3-pip
+sudo apt install python3.12-venv
+python3 -m venv virtual_jupyter ./virtual_jupyter
+virtual_jupyter/bin/pip3 install jupyterlab
+virtual_jupyter/bin/pip3 install mysql-connector-python
+
+-------------- connect EBS
+sudo file -s /dev/nvme1n1
+sudo mkfs -t xfs /dev/nvme1n1
+sudo mkdir /data
+sudo mount /dev/nvme1n1 /data
+sudo ln -s /data data
+sudo chown -h ubuntu data
+sudo chown -h ubuntu /data
+	
+
+-------------- install Flask
+cd flask_app
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install mysql-connector-python
+python3 -m pip install requests
+python3 -m pip install zstandard
+pip install Flask
+cd venv
+cd bin
+
+git clone https://github.com/Sundeep-Parmar-UC/608-project-ver1.git
+cd 608-project-ver1
+mv * ..
+cd ..
+cd.mv runLab.sh ../../..
+mv startpage.sh ../../..
+cd ../../..
+chmod +x runLab.sh
+chmod +x startpage.sh
+
+
+---- run Jupyter lab
+cd
+./runLab.sh
+
+---- open DB-Prepare  notebook inside Jupyter lab
+---- copy/paste RDS connection into first code chuck
+---- run entire notebook
+
+
+
+---- run webpage for Data Ingestion and Training  from another putty session
+./startpage.sh ingest.py
+
+
+
+
+
