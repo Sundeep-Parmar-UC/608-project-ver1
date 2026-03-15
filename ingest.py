@@ -1,5 +1,13 @@
 import mysql.connector
 from mysql.connector import Error
+ConnectString = "mysql -h database-1.clqxqhhe6wft.us-east-1.rds.amazonaws.com -P 3306 -u admin -p'<Enter_DB_Password>' "
+
+host=ConnectString[9:60]
+user='admin'
+password='Data608-Project'
+database='CHESSBOT'
+
+
 
 import obtain as ob
 import decompress as dc
@@ -40,7 +48,7 @@ def index():
         #-----------------------------  Obtain
         AppLog += "Starting Obtain: " + datetime.now().strftime('%M:%S.%f')
         AppLog += "<br>"
-        EBSpath = "/data2/"
+        EBSpath = "/data/"
     
         AppLog += "Input EBSpath: " + EBSpath + " : " + datetime.now().strftime('%M:%S.%f')
         AppLog += "<br>"   
@@ -72,41 +80,37 @@ def index():
         AppLog += "<br>--------<br>"
     
         #-------------------------------- Database Connect
-        #mysql -h database-1.clqxqhhe6wft.us-east-1.rds.amazonaws.com -P 3306 -u admin -p'Data608-Project'
         AppLog += "Attempting MySQL Server connection: " + datetime.now().strftime('%M:%S.%f')
         AppLog += "<br>"
-        connection = mysql.connector.connect(host='database-1.clqxqhhe6wft.us-east-1.rds.amazonaws.com',user='admin',password='Data608-Project',database='')
-        
-       if connection.is_connected():
-    #       db_info = info = connection.server_info
-    #       cursor = connection.cursor()
-    #       AppLog += "Connected to MySQL Server: " + datetime.now().strftime('%M:%S.%f')
-    #       AppLog += "<br>--------<br>"       
-    #   else:
-        AppLog += "SKIPPED MySQL Server connection: " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>--------<br>"       
-        
-        #-----------------------------  Parse
-        AppLog += "Starting Parse: " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"
-        
-        AppLog += "Input uncompressFilePath: " + uncompressFilePath + " : " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"   
-    
-        metric,successbit = pa.Parse(uncompressFilePath)
-    
-        AppLog += "Output metric (Events Found): " + str(metric[0]) + " : " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"
-        AppLog += "Output metric (Events Skipped): " + str(metric[1]) + " : " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"
-        AppLog += "Output metric (Log): " + str(metric[2]) + " : " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"
-        AppLog += "Output metric (White): " + str(metric[3]) + " : " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"
-        AppLog += "Output successbit: " + str(successbit) + " : " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>"
-        AppLog += "Ending Parse: " + datetime.now().strftime('%M:%S.%f')
-        AppLog += "<br>--------<br>"
+        connection = mysql.connector.connect(host=host,user=user,password=password,database=database,autocommit=True) 
+
+        if connection.is_connected():
+            cursor = connection.cursor()
+            AppLog += "Connected to MySQL Server: " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>--------<br>"       
+            
+            #-----------------------------  Parse
+            AppLog += "Starting Parse: " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>"
+            
+            AppLog += "Input uncompressFilePath: " + uncompressFilePath + " : " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>"   
+            
+            metric,successbit = pa.Parse(uncompressFilePath,cursor)
+            
+            AppLog += "Output metric (Events Found): " + str(metric[0]) + " : " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>"
+            AppLog += "Output metric (Events Skipped): " + str(metric[1]) + " : " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>"
+            AppLog += "Output metric (Log): " + str(metric[2]) + " : " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>"
+            AppLog += "Ending Parse: " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>--------<br>"
+            #-----------------------------  End Parse
+            
+        else:
+            AppLog += "FAILED MySQL Server connection: " + datetime.now().strftime('%M:%S.%f')
+            AppLog += "<br>--------<br>"       
     
         #-----------------------------  Cleanup
         AppLog += "Starting Cleanup: " + datetime.now().strftime('%M:%S.%f')

@@ -6,13 +6,11 @@
 
 def LoadGame(game_data,SQLconnect):
 
-    successbit = ""
-    GameSQL = "INSERT INTO games (White_ELO, Black_ELO, Opening, Site, Termination) VALUES (%s, %s, %s, %s, %s)"
-    successbit += f"#SQLconnect.execute({GameSQL}, ({game_data[0]}, {game_data[1]}, {game_data[2]}, {game_data[3]}, {game_data[4]}))" + "<br>"
+    GameSQL = "INSERT INTO games (Site,White_ELO, Black_ELO, Opening) VALUES (%s, %s, %s, %s)"
+#    successbit += f"#SQLconnect.execute({GameSQL}, ({game_data[0]}, {game_data[1]}, {game_data[2]}, {game_data[3]}))" + "<br>"
 
-    #Retrieve the last inserted ID
-    #game_id = SQLconnect.lastrowid  # This gets the 'ID' automatically
-    
-    game_id = 100
- 
-    return game_id,successbit
+    SQLconnect.execute(GameSQL, (game_data[0], game_data[1], game_data[2], game_data[3]))
+    InsertedRecord = SQLconnect.lastrowid
+    successbit = f"Record inserted. game_ID: {InsertedRecord} <br>"
+
+    return InsertedRecord,successbit
