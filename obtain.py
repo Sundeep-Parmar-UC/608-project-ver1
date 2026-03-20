@@ -7,7 +7,7 @@ def Obtain(EBSpath,fileName):
 
     # 1. Download the file
     try:
-        response = requests.get(url, stream=True)
+        response = requests.get(url, stream=True, timeout=600) 
         response.raise_for_status() # Ensure the download was successful
 
         with open(downloadedFilePath, 'wb') as f:

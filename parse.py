@@ -19,7 +19,6 @@ def Parse(uncompressFilePath,SQLconnect):
     Eventscollected = 0 #number of events collected
     Eventsskipped = 0 #number of events skipped
     Log = ""
-    
     # Download the file from the URL and save it locally
     #urllib.request.urlretrieve(file_url, local_filename)
     #print(f"File '{local_filename}' downloaded successfully from '{file_url}'.")
@@ -33,6 +32,9 @@ def Parse(uncompressFilePath,SQLconnect):
 
             line = file.readline() #read one line from data file
             LinesTotalRead+=1 # increment lines read
+            if LinesTotalRead % 10000 == 0:
+                print("LinesTotalRead: ",LinesTotalRead)
+            
             if not line:  # Check if the line is an empty string, indicating EOF
                 Log += "End of file reached." # stop processing, all events should have been saved.
                 break
@@ -49,9 +51,9 @@ def Parse(uncompressFilePath,SQLconnect):
             elif line.startswith('1. '): #Found Moves info
                 MovesData = line.strip() # Use the entire line for the Moves column    
 
-                if re.search(r"# [01]-[01]$", MovesData):  #found game with natural checkmate
+                if MoveValidation(MovesData):
+                    MoveLineGathered = True  #found game with natural checkmate
 #                   Log += "Found Natural Checkmate game:<br>"
-                    MoveLineGathered = True
                 else:
 #                   Log += "Not natural checkmate :<br>"
                     Eventsskipped+=1
@@ -90,3 +92,16 @@ def Parse(uncompressFilePath,SQLconnect):
     metric = [Eventscollected,Eventsskipped,Log,"Game","Moves",uncompressFilePath]
     successbit = True
     return metric,successbit
+
+
+
+def MoveValidation(moves):
+    ApprovedMoves = False
+
+    if re.search(r"# [01]-[01]$", moves):
+        ApprovedMoves = True
+    
+    if "=" in moves:
+        ApprovedMoves = False
+
+    return ApprovedMoves

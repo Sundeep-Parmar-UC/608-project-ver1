@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-ConnectString = "mysql -h database-1.clqxqhhe6wft.us-east-1.rds.amazonaws.com -P 3306 -u admin -p'<Enter_DB_Password>' "
+ConnectString = "mysql -h database-1.clqxqhhe6wft.us-east-1.rds.amazonaws.com -P 3306 -u admin -p'<Enter_DB_Password>' --ssl-verify-server-cert  --ssl-ca=/certs/global-bundle.pem mysql"
 
 host=ConnectString[9:60]
 user='admin'
