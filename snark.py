@@ -22,7 +22,7 @@ dict_SnarkLevel= {
 #connect to Google Gemini API
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyCHvJFgUh0PqwqJXEKZ8VosEeXfRkK2s0c")
+genai.configure(api_key="xxxxxxx")
 model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
 
 # return remark text
