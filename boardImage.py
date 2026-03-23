@@ -42,6 +42,6 @@ def boardImage(BoardLayout, BoardSpace):
 
         piece_type = piece_type_map[piece.lower()]
 
-        ImageName = f"ChessBoard/{piece_color}_{piece_type}_{square_color}.jpg"
+        ImageName = f"ChessBoard/{square_color}_{piece_type}_{piece_color}.jpg"
 
     return ImageName

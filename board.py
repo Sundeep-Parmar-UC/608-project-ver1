@@ -1,5 +1,4 @@
-# receive UserMove
-# receive BotMove
+# receive move  -> to apply to board layout
 # receive complete Board layout
 
 #use magic (or source/destination pairs from user and bot))
@@ -14,7 +13,7 @@
 # -- is either UserMove or BotMove going to be null each time this function is evoked?
 # -- is this part checking for checkmate?
 
-def board(UserMove, BotMove, BoardLayout):
+def board(move, BoardLayout):
     # check for castling
     if move == "e1g1":  # kingside white
         BoardLayout[0][4] = "0"
