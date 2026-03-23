@@ -9,50 +9,38 @@
 
 #return new Board layout with updated moves
 
+# Assumptions
+# -- is the board array like the one in my python notebook?
+# -- is either UserMove or BotMove going to be null each time this function is evoked?
+# -- is this part checking for checkmate?
+
 def board(UserMove, BotMove, BoardLayout):
-    # figure out turn
-    if not UserMove:
-        move = BotMove
-        turn = "Black"
-    else:
-        move = UserMove
-        turn = "White"
-    
     # check for castling
-    if move == "O-O":  # kingside
-        if turn == "White":
-            BoardLayout[0][4] = "0"
-            BoardLayout[0][7] = "0"
-            BoardLayout[0][6] = "k"
-            BoardLayout[0][5] = "r"
+    if move == "e1g1":  # kingside white
+        BoardLayout[0][4] = "0"
+        BoardLayout[0][7] = "0"
+        BoardLayout[0][6] = "k"
+        BoardLayout[0][5] = "r"
     
-        elif turn == "Black":
-            BoardLayout[7][4] = "0"
-            BoardLayout[7][7] = "0"
-            BoardLayout[7][6] = "K"
-            BoardLayout[7][5] = "R"
+    elif move == "e8g8":  # kingside black
+        BoardLayout[7][4] = "0"
+        BoardLayout[7][7] = "0"
+        BoardLayout[7][6] = "K"
+        BoardLayout[7][5] = "R"
     
-    elif move == "O-O-O":  # queenside
-        if turn == "White":
-            BoardLayout[0][4] = "0"
-            BoardLayout[0][0] = "0"
-            BoardLayout[0][2] = "k"
-            BoardLayout[0][3] = "r"
+    elif move == "e1c1":  # queenside white
+        BoardLayout[0][4] = "0"
+        BoardLayout[0][0] = "0"
+        BoardLayout[0][2] = "k"
+        BoardLayout[0][3] = "r"
     
-        elif turn == "Black":
-            BoardLayout[7][4] = "0"
-            BoardLayout[7][0] = "0"
-            BoardLayout[7][2] = "K"
-            BoardLayout[7][3] = "R"
+    elif move == "e8c8":  # queenside black
+        BoardLayout[7][4] = "0"
+        BoardLayout[7][0] = "0"
+        BoardLayout[7][2] = "K"
+        BoardLayout[7][3] = "R"
     
     else:
-        # remove piece letter if present, like N in Ng8-f6
-        if move[0].upper() in ["N", "B", "R", "Q", "K"]:
-            move = move[1:]
-    
-        # remove hyphen, like c2-c4 -> c2c4
-        move = move.replace("-", "")
-    
         if len(move) == 4 or len(move) == 5:
             start_col = ord(move[0]) - ord('a')
             start_row = int(move[1]) - 1
