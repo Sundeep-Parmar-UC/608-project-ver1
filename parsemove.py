@@ -17,22 +17,18 @@ def ParserMove(movesPGN):
     #moves_Piece_array = re.findall(r'\d+\.\s+([^\s]+)\s+([^\s]+)', moves)
 
     #at this point chess moves are in PGN notation,  convert to LAN (long algebraic)
-    movesArray = pgn_to_lan_list(movesPGN)
+    movesArray = pgn_to_coordinates(movesPGN)
 
     NumberOfMoves = len(movesArray)
     MoveNumber = 1 
     WhiteMove = True
     moves = ""
     for row in movesArray:
-        Testrow = row
-        row = CastleFix(row,WhiteMove)
-       
         if WhiteMove:
             WhiteMove = False
             moves += " " + str(MoveNumber) + ". " + row
             MoveNumber += 1
         else:
-            row = CastleFix(row,WhiteMove)
             moves += " " + row
             WhiteMove = True
 
@@ -120,38 +116,21 @@ def ParserMove(movesPGN):
     return move_array,successbit
 
 
-def pgn_to_lan_list(pgn_string):
-    # Use io.StringIO to treat the string like a file
-    pgn_data = io.StringIO(pgn_string)
-    game = chess.pgn.read_game(pgn_data)
+def pgn_to_coordinates(pgn_text):
+    # Use StringIO to treat the string like a file
+    pgn_file = io.StringIO(pgn_text)
     
+    # Read the game from the PGN
+    game = chess.pgn.read_game(pgn_file)
     if not game:
         return []
 
-    lan_moves = []
-    board = game.board() # Start with the initial position
+    coordinate_moves = []
     
-    # Iterate through each move in the main line
+    # Iterate through the main line of the game
     for move in game.mainline_moves():
-        # board.lan() generates Long Algebraic Notation (e.g., "e2-e4")
-        lan_moves.append(board.lan(move))
-        
-        # Update the board state to the next position
-        board.push(move)
-        
-    return lan_moves
+        # .uci() returns the move in Pure Coordinate format (e.g., 'g1f3')
+        coordinate_moves.append(move.uci())
 
+    return coordinate_moves
 
-def CastleFix(CurrentMove,Playmove): # if O-O or O-O-O received, convert to king move
-    ReturnMove = CurrentMove
-    if(CurrentMove == "O-O" and Playmove):
-        ReturnMove = "Ke1-g1"
-    elif(CurrentMove == "O-O-O" and Playmove):
-        ReturnMove = "Ke1-c1"
-    elif(CurrentMove == "O-O"):
-        ReturnMove = "Ke8-g8"
-    elif(CurrentMove == "O-O-O"):
-        ReturnMove = "Ke8-c8"
-
-    return ReturnMove
-    
