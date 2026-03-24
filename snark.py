@@ -5,24 +5,29 @@
 # prepare API remark statement
 # pre-defined remark types
 dict_RemarkType = {
-    "first_move": "This is the first move of the game.",
+    "start": "This is the first pair moves of the game.",
     "general_move": "This is a normal mid‑game move.",
     "black_won": "Black has won the game.",
     "unique_position": "This move leads to a rare or unusual board position.",
     "illegal_move": "The move played is illegal.",
+    "Wend": "The human player won the game, AI is defeated",
+    "Bend": "AI has won the game",
+    "Uend": "The game is reached a unique position and cannot be played further",
+    
 }
+
 #pre-defined snark levels
 dict_SnarkLevel= {
     #"off": "No snark. Respond with an empty string.",
     "neutral": "Respond with a neutral, factual tone.",
     "positive": "Respond with a friendly, encouraging tone.",
-    "evil": "Respond with a slightly arrogant, mocking, evel-humor, or snarky tone.",
+    "evil": "Respond with a slightly arrogant, mocking, evil-humor, or snarky tone.",
 }
 
 #connect to Google Gemini API
 import google.generativeai as genai
 
-genai.configure(api_key="xxxxxxx")
+genai.configure(api_key="cccccccccccccccccccccccccc")
 model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
 
 # return remark text
@@ -32,12 +37,12 @@ def snark(RemarkType, SnarkLevel, MoveNumber):
         return ""
 
     #lookup RemarkType and SnarkLevel from dict, if not exist, fallback on the quotes as stated
-    remark_context = dict_RemarkType.get(RemarkType, "General chess remark.")
+    remark_context = dict_RemarkType.get(RemarkType, "General chess remark as if bot played responding move")
     snark_tone = dict_SnarkLevel.get(SnarkLevel, "Respond in a neutral tone.")
 
     #call Gemini
     prompt = (
-        "Give me a single short chess remark based on the following:\n"
+        "Give me a single short chess remark based somewhat on the following:\n"
         f"- Snark level: {SnarkLevel}\n"
         f"- Remark type: {RemarkType}\n"
         f"- Meaning: {remark_context}\n"
