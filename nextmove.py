@@ -130,6 +130,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     AllPossiblemoves = []
     BotMove = ""
     Metrics = []
+    
     PossibleMovesConsideredMetric = []
     if(NumofGames == 0):
         GameCondition = "Uend" 
