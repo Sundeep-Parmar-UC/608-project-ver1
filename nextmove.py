@@ -25,8 +25,12 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     #count number of moves in
     move_pairs = len(re.findall(r'\d+\.', MovesString))
     move_pairs += 1
-    MovesString = MovesString + " " + str(move_pairs) + ". " + UserMove
-#    print(MovesString) 
+    if(len(MovesString) == 0):
+            MovesString = str(move_pairs) + ". " + UserMove
+    else:
+        MovesString = MovesString + " " + str(move_pairs) + ". " + UserMove
+
+    #print(MovesString) 
     
     # prepare SQL statement
     SQLStatementEnd = ""    
