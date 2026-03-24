@@ -128,6 +128,9 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     NumofGames = len(records)
     print(f"Total Games found: {len(records)}")
     AllPossiblemoves = []
+    BotMove = ""
+    Metrics = []
+    PossibleMovesConsideredMetric = []
     if(NumofGames == 0):
         GameCondition = "Uend" 
     else:
