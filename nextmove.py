@@ -3,6 +3,7 @@
 # receive user move
 # receive SQL connector
 # receive BotDifficulty
+# receive GameCondition
 
 # construction user move with Moves string
 # prepare SQL statement
@@ -18,14 +19,14 @@ import board as bd
 import re
 from collections import Counter
 
-def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty):
+def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondition):
 
     # construction user move with Moves string
     #count number of moves in
     move_pairs = len(re.findall(r'\d+\.', MovesString))
     move_pairs += 1
     MovesString = MovesString + " " + str(move_pairs) + ". " + UserMove
-    print(MovesString) 
+#    print(MovesString) 
     
     # prepare SQL statement
     SQLStatementEnd = ""    
@@ -122,69 +123,105 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty):
     # num of games to consider
     NumofGames = len(records)
     print(f"Total Games found: {len(records)}")
+    AllPossiblemoves = []
+    if(NumofGames == 0):
+        GameCondition = "Uend" 
+    else:
+        GameCondition = "middle"         
+        #decide next move
+        BotMovestoConsider = []
     
-    #decide next move
-    BotMovestoConsider = []
+        for i in range(NumofGames):
+            Possiblemoves = " ".join(str(records[i][j]) for j in range(1, 9) if records[i][j] is not None)
+            if move_pairs < 6:
+                # Added .strip() to clean up leading spaces
+                raw_move = records[i][1].removeprefix(Set5)
+                Possiblemoves = Possiblemoves.removeprefix(Set5)
+            elif move_pairs < 11:
+                raw_move = records[i][2].removeprefix(Set10)
+                Possiblemoves = Possiblemoves.removeprefix(Set10)
+            elif move_pairs < 16:
+                raw_move = records[i][3].removeprefix(Set15)
+                Possiblemoves = Possiblemoves.removeprefix(Set15)
+            elif move_pairs < 21:
+                raw_move = records[i][4].removeprefix(Set20)
+                Possiblemoves = Possiblemoves.removeprefix(Set20)
+            elif move_pairs < 31:
+                raw_move = records[i][5].removeprefix(Set30)
+                Possiblemoves = Possiblemoves.removeprefix(Set30)
+            elif move_pairs < 41:
+                raw_move = records[i][6].removeprefix(Set40)
+                Possiblemoves = Possiblemoves.removeprefix(Set40)
+            elif move_pairs < 71:
+                raw_move = records[i][7].removeprefix(Set70)
+                Possiblemoves = Possiblemoves.removeprefix(Set70)
+            else:
+                raw_move = records[i][8].removeprefix(Set_Remain) # Fixed variable name
+                Possiblemoves = Possiblemoves.removeprefix(Set_Remain)
 
-    for i in range(NumofGames):
-        if move_pairs < 6:
-            # Added .strip() to clean up leading spaces
-            raw_move = records[i][1].removeprefix(Set5)
-        elif move_pairs < 11:
-            raw_move = records[i][2].removeprefix(Set10)
-        elif move_pairs < 16:
-            raw_move = records[i][3].removeprefix(Set15)
-        elif move_pairs < 21:
-            raw_move = records[i][4].removeprefix(Set20)
-        elif move_pairs < 31:
-            raw_move = records[i][5].removeprefix(Set30)
-        elif move_pairs < 41:
-            raw_move = records[i][6].removeprefix(Set40)
-        elif move_pairs < 71:
-            raw_move = records[i][7].removeprefix(Set70)
-        else:
-            raw_move = records[i][8].removeprefix(Set_Remain) # Fixed variable name
-    
-        # Clean up and append
-        BotMovestoConsider.append(raw_move.strip()[0:4])
+            # Clean up and append
+            BotMovestoConsider.append(raw_move.strip()[0:4])
+
+            #build long string for all games and then grab N+1 moves possible
+            AllPossiblemoves.append(Possiblemoves.strip())
+
+        # 1. Get histogram of all next moves
+        move_counts = Counter(BotMovestoConsider)
         
-
-    # 1. Get histogram of all next moves
-    move_counts = Counter(BotMovestoConsider)
+        # 2. Collect next moves into metric array with percentage
+        MovesConsideredMetric = []
+        for move, count in move_counts.most_common():
+            MovesConsideredMetric.append([move,round(count/NumofGames, 3)])
     
-    # 2. Collect next moves into metric array with percentage
-    MovesConsideredMetric = []
-    for move, count in move_counts.most_common():
-        MovesConsideredMetric.append([move,round(count/NumofGames, 3)])
+        #select highest percentage move as bot move
+        BotMove = MovesConsideredMetric[0][0].strip()
+        print("selected BotMove: ",BotMove)
+        
+        if(BotMove == ""):
+            GameCondition = "Wend" 
 
-    #select highest percentage move as bot move
-    BotMove = MovesConsideredMetric[0][0]
-    Metrics = [NumofGames,MovesConsideredMetric]
+        NextPossibleMove = []
+        for NextMoveRow in AllPossiblemoves:
+            if(NextMoveRow[0:4].strip() == BotMove):
+                NextPossibleMove.append(NextMoveRow[NextMoveRow.find(".")+2:NextMoveRow.find(".")+6])
 
-    print("selected BotMove: ",BotMove)
-    #call baord update function  
-    print("calling board update")
+        # 1. Get histogram of all next moves
+        Possiblemove_counts = Counter(NextPossibleMove)
+        
+        # 2. Collect next moves into metric array with percentage
+        PossibleMovesConsideredMetric = []
+        for move2, count2 in Possiblemove_counts.most_common():
+            PossibleMovesConsideredMetric.append([move2,count2])
+        
+  
+        Metrics = [NumofGames,MovesConsideredMetric,PossibleMovesConsideredMetric]
 
 
-    #1. split input  PGN-style MovesString into tokens
-    tokens = MovesString.split()
+        #call baord update function  
+    #    print("calling board update")
     
-    #2. Skip move numbers "1.", "2." etc.
-    moves = [t for t in tokens if not t.endswith(".")]
-
-    #3. Build movelist html-ready MoveTable
-    MoveTable = []
-    for idx, move in enumerate(moves):
-        BoardLayout = bd.board(move, BoardLayout)
-
-
-    BoardLayout = bd.board(UserMove, BoardLayout)
-    BoardLayout = bd.board(BotMove, BoardLayout)
     
-    print("done board update")
+        #1. split input  PGN-style MovesString into tokens
+        tokens = MovesString.split()
+        
+        #2. Skip move numbers "1.", "2." etc.
+        moves = [t for t in tokens if not t.endswith(".")]
+    
+        #3. Build movelist html-ready MoveTable
+        MoveTable = []
+        for idx, move in enumerate(moves):
+            BoardLayout = bd.board(move, BoardLayout)
+    #        print(f"BoardLayout = bd.board(UserMove, BoardLayout): BoardLayout = bd.board({move}, BoardLayout")
+    #        for i in range(8):
+    #            print(BoardLayout[i])
+    
+    #    print(f"BoardLayout = bd.board(UserMove, BoardLayout): BoardLayout = bd.board({BotMove}, BoardLayout")
+        BoardLayout = bd.board(BotMove, BoardLayout)
+        
+    #    print("done board update")
+    
+    #    print("BotMove: ",BotMove)
+        print("Metrics: ",Metrics)
+    #    print("BoardLayout: ",BoardLayout)
 
-    print("BotMove: ",BotMove)
-    print("Metrics: ",Metrics)
-    print("BoardLayout: ",BoardLayout)
-
-    return BotMove,Metrics,BoardLayout
+    return BotMove,Metrics,BoardLayout,GameCondition

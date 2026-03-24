@@ -11,12 +11,12 @@ def  htmlPagetemplate(section):
         #define Header 
         Htmlsection += '<h1><BIG>Welcome to Chess Bot </BIG></h1>'
         Htmlsection += '<table style="font-size: 24px; background-color: black; color: white; margin: 0 auto; width: 50%; border-collapse: collapse; text-align: center;"><tbody><tr><td>'
-        Htmlsection += '<table><tbody>'
+        Htmlsection += '<table style="vertical-align: top;"><tbody>'
         
     elif section == 2:
         Htmlsection = """</tbody></table>
-    </td><td>
-<table style="font-size: 24px; width: 100%; max-width: 400px; border-collapse: collapse;">
+    </td><td style="vertical-align: top;">
+<table style="vertical-align: top; font-size: 24px; width: 100%; max-width: 400px; border-collapse: collapse;">
   <thead>
     <tr style="background-color: black;">
       <th style="padding: 6px; border: 2px solid #ddd;">#</th>
@@ -34,11 +34,11 @@ def  htmlPagetemplate(section):
         	<form method="POST"><table style="font-size: 24px; background-color: black; color: white; margin: 0 auto; width: 50%; border-collapse: collapse; text-align: center;"><tbody><tr>
         	<td rowspan="2" style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;">Next Move:</td>
         	<td style="border: 2px solid #555;padding: 16px;">
-        	Source Coloum </td>
+        	Source Column </td>
         	<td style="border: 2px solid #555;padding: 16px;">
         	Source Row </td>
             <td style="border: 2px solid #555;padding: 16px;">
-        	Destination Coloum </td>
+        	Destination Column </td>
             <td style="border: 2px solid #555;padding: 16px;">
         	Destination Row </td>
         		<td rowspan="2" style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="button" style="font-size: 24px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">

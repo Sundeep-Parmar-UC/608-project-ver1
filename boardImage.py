@@ -15,9 +15,9 @@ def boardImage(BoardLayout, BoardSpace):
 
     # determine square color
     if (row + col) % 2 == 0:
-        square_color = "White"
-    else:
         square_color = "Black"
+    else:
+        square_color = "White"
 
     # empty square
     if piece == "0":
