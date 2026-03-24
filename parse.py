@@ -8,7 +8,7 @@ import mysql.connector
 def Parse(uncompressFilePath,SQLconnect):
 
     #Set variable to stop collecting events after # lines read
-    Stop_loading_data_after_lines = 5000000
+    Stop_loading_data_after_lines = 500000000
     
     # Define the desired column names: WhiteELO, BlackELO, Opening, Site, Termination, 
 
