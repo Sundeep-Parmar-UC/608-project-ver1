@@ -193,7 +193,9 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
         for move2, count2 in Possiblemove_counts.most_common():
             PossibleMovesConsideredMetric.append([move2,count2])
         
-  
+        if(len(PossibleMovesConsideredMetric) == 0):
+             GameCondition = "Bend"
+        
         Metrics = [NumofGames,MovesConsideredMetric,PossibleMovesConsideredMetric]
 
 
