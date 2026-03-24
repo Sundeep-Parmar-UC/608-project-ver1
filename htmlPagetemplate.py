@@ -41,13 +41,13 @@ def  htmlPagetemplate(section):
         	Destination Column </td>
             <td style="border: 2px solid #555;padding: 16px;">
         	Destination Row </td>
-        		<td rowspan="2" style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="button" style="font-size: 24px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">
+        		<td rowspan="2" style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" style="font-size: 24px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">
           Submit
-        </button></td>
+        </f></td>
         
         	</tr><tr>
         	<td style="border: 2px solid #555;">
-        		<select id="move-select" name="moves" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
+        		<select id="move-select" name="SourceSpaceColoum" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
         			<option value="a">A</option>
         			<option value="b">B</option>
         			<option value="c">C</option>
@@ -59,7 +59,7 @@ def  htmlPagetemplate(section):
         			</select>
         	</td>
         	<td style="border: 2px solid #555;">
-        		<select id="move-select" name="moves" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
+        		<select id="move-select" name="SourceSpaceRow" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
         			<option value="1">1</option>
         			<option value="2">2</option>
         			<option value="3">3</option>
@@ -72,7 +72,7 @@ def  htmlPagetemplate(section):
         	</td>
         
         	<td style="border: 2px solid #555;">
-        		<select id="move-select" name="moves" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
+        		<select id="move-select" name="DestinationSpaceColoum" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
         			<option value="a">A</option>
         			<option value="b">B</option>
         			<option value="c">C</option>
@@ -84,7 +84,7 @@ def  htmlPagetemplate(section):
         			</select>
         	</td>
         	<td style="border: 2px solid #555;">
-        		<select id="move-select" name="moves" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
+        		<select id="move-select" name="DestinationSpaceRow" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
         			<option value="1">1</option>
         			<option value="2">2</option>
         			<option value="3">3</option>

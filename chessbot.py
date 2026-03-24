@@ -35,6 +35,7 @@ app = Flask(__name__)
 def index():
 
     #define blank variables for initial State 0 of website
+    HiddenInputs = ""
     SourceSpaceColoum = ""
     SourceSpaceRow = ""
     DestinationSpaceColoum = ""
@@ -65,7 +66,6 @@ def index():
     #check if POST variables are available,  for state N of website
     if request.method == 'POST':
         # Capture data from the form input named 'content'
-        fileNameSelected = request.form.get('fileNameSelected')
         SourceSpaceColoum = request.form.get('SourceSpaceColoum')
         SourceSpaceRow = request.form.get('SourceSpaceRow')
         DestinationSpaceColoum = request.form.get('DestinationSpaceColoum')
@@ -111,6 +111,15 @@ def index():
         else:
             RemarkText = sn.snark(GameCondition,SnarkLevel,len(BaseMovesList))
 
+        #--------------------------------------- (build hidden variables)
+        
+        HiddenInputs = '<input type="hidden" name="AllMovesString" value="' + AllMovesString +'">'
+        HiddenInputs += '<input type="hidden" name="BotDifficulty" value="' + BotDifficulty +'">'
+        HiddenInputs += '<input type="hidden" name="MetricDisplay" value="' + MetricDisplay +'">'
+        HiddenInputs += '<input type="hidden" name="SnarkLevel" value="' + SnarkLevel +'">'
+        HiddenInputs += '<input type="hidden" name="RemarkFreq" value="' + RemarkFreq +'">'
+        HiddenInputs += '<input type="hidden" name="RemarkType" value="' + RemarkType +'">'
+        HiddenInputs += '<input type="hidden" name="GameCondition" value="' + GameCondition +'">'
     
     #call outside-----------------------
     #obtain webpage base template
@@ -133,7 +142,7 @@ def index():
             # Debug print
     #        print(f"{space_address} -> {PiecePictureName}")
     
-            FirstPartOfPage += f'<td><img src="{PiecePictureName}" width="100" alt="Chess Square {space_address}"></td>'
+            FirstPartOfPage += f'<td><img src="https://raw.githubusercontent.com/Sundeep-Parmar-UC/608-project-ver1/refs/heads/main/{PiecePictureName}" width="100" alt="Chess Square {space_address}"></td>'
         FirstPartOfPage += '</tr>'
     
     FirstPartOfPage += '<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td></tr>'
@@ -185,8 +194,8 @@ def index():
         
         MetricDecision += '</td></tr>'
     
-    FourthPartOfPage = MetricDecision + FourthPartOfPage
-    
+    FourthPartOfPage = HiddenInputs + MetricDecision + FourthPartOfPage
+
     #---------------------------------------
     
     FifthPartOfPage = RemarkText + FifthPartOfPage
