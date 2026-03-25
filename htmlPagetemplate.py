@@ -9,7 +9,7 @@ def  htmlPagetemplate(section):
         
         
         #define Header 
-        Htmlsection += '<h1><BIG>Welcome to Chess Bot </BIG></h1>'
+        Htmlsection += '<h3>Data 608:Chess Bot<br> by G5-Rita Group:  Michael, Sundeep, Yu Ling</h1>'
         Htmlsection += '<table style="font-size: 24px; background-color: black; color: white; margin: 0 auto; width: 50%; border-collapse: collapse; text-align: center;"><tbody><tr><td>'
         Htmlsection += '<table style="vertical-align: top;"><tbody>'
         
@@ -41,10 +41,8 @@ def  htmlPagetemplate(section):
         	Destination Column </td>
             <td style="border: 2px solid #555;padding: 16px;">
         	Destination Row </td>
-        		<td rowspan="2" style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" style="font-size: 24px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">
-          Submit
-        </f></td>
-        
+        		<td rowspan="2" style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" name="action" value="calculate" style="font-size: 24px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">
+          Submit </button></td>
         	</tr><tr>
         	<td style="border: 2px solid #555;">
         		<select id="move-select" name="SourceSpaceColoum" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">
@@ -98,6 +96,15 @@ def  htmlPagetemplate(section):
         
         
         	</tr>"""
+    elif section == 8:
+        Htmlsection = """ </tbody>
+        </table>
+        </td></tbody></table>	
+        <hr>
+        	<form method="POST"><table style="font-size: 24px; background-color: black; color: white; margin: 0 auto; width: 50%; border-collapse: collapse; text-align: center;"><tbody><tr>
+        	<td rowspan="5"style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;">Created by G5-Rita Group: Michael, Sundeep, Yu Ling</td>
+        	<td style="font-size: 34px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" name="action" style="font-size: 24px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;" value="reset">
+          Reset Game </button></td></tr>"""
     elif section == 4:
         Htmlsection = """</tbody></table></form>
         <p style="color: red; font-style: italic;font-size: 24px;">
@@ -109,11 +116,4 @@ def  htmlPagetemplate(section):
         </html>
         """
 
-        BotDifficulty = "1000"  #1000-Easy ,  1500 - Medium,  2500 - Hard,  5000 - Grandmaster
-        MetricDisplay = "1"   #1 - display metrics   0 - do not display
-        RemarkType = "first move"  #1) first move  2) general move  3)Black won 4) UniqueMovePosition 5)Illegal Move
-        SnarkLevel = "neutral" #off, neutral, positive, evil
-
-
-    
     return Htmlsection

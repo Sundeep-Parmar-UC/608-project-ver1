@@ -7,7 +7,6 @@ user='admin'
 password='Data608-Project'
 database='CHESSBOT'
 
-Logging = ""
 #---------------------------------------
 
 import warnings
@@ -42,12 +41,12 @@ def index():
     DestinationSpaceRow = ""
     AllMovesString = ""
     BotDifficulty = ""
-    MetricDisplay = ""
+    MetricDisplay = "0"
     SnarkLevel = ""
     RemarkFreq = ""
-    RemarkType = ""
+    RemarkType = "general_move"
     RemarkText = ""
-    GameCondition = ""
+    GameCondition = "start"
     BoardRow1 = "r,n,b,q,k,b,n,r";    #row 1 a through h
     BoardRow2 = "p,p,p,p,p,p,p,p";
     BoardRow3 = "0,0,0,0,0,0,0,0";
@@ -64,7 +63,7 @@ def index():
     
     
     #check if POST variables are available,  for state N of website
-    if request.method == 'POST':
+    if request.method == 'POST' and request.form.get('action') != 'reset':
         # Capture data from the form input named 'content'
         SourceSpaceColoum = request.form.get('SourceSpaceColoum')
         SourceSpaceRow = request.form.get('SourceSpaceRow')
@@ -75,7 +74,6 @@ def index():
         MetricDisplay = request.form.get('MetricDisplay')
         SnarkLevel = request.form.get('SnarkLevel')
         RemarkFreq = request.form.get('RemarkFreq')
-        RemarkType = request.form.get('RemarkType')
         GameCondition = request.form.get('GameCondition')
     
         UserMove = SourceSpaceColoum +  SourceSpaceRow +  DestinationSpaceColoum + DestinationSpaceRow
@@ -91,26 +89,27 @@ def index():
         if connection.is_connected():
             cursor = connection.cursor()
         else:
-            Logging += "MYSQL Connection Failed"
             exit()
         
         BotMove,Metrics,BoardLayout,GameCondition = nm.nextmove(BoardLayout,AllMovesString,UserMove,cursor,BotDifficulty,GameCondition)
         
-        Logging += "GameCondition: " + GameCondition
-        
         # append AllMovesString with new pair of moves
-        move_numbers = re.findall(r'(\d+)\.', AllMovesString)
-        next_num = int(move_numbers[-1]) + 1 if move_numbers else 1
-        AllMovesString += f" {next_num}. {UserMove} {BotMove}"
-
-        Logging += "AllMovesString: " + AllMovesString
+        move_numbers = 1
+        if not AllMovesString:
+                AllMovesString = f"{move_numbers}. {UserMove} {BotMove}"
+        else:
+            move_numbers = len(re.findall(r'\d+\.', AllMovesString))
+            move_numbers += 1
+            AllMovesString += f" {move_numbers}. {UserMove} {BotMove}"
 
         #call snark remark
-        if(GameCondition == "middle"):
-            RemarkText = sn.snark(RemarkType,SnarkLevel,len(BaseMovesList))
+        if(SnarkLevel != "off" and GameCondition == "middle"):
+            if((RemarkFreq == 10 and move_pairs % 2 == 0) or (RemarkFreq == 4 and move_pairs % 4 == 0) or (RemarkFreq == 1)):
+                RemarkText = sn.snark(RemarkType,SnarkLevel,move_numbers)
+ 
         else:
-            RemarkText = sn.snark(GameCondition,SnarkLevel,len(BaseMovesList))
-
+            RemarkText = sn.snark(GameCondition,SnarkLevel,move_numbers)
+            
         #--------------------------------------- (build hidden variables)
         
         HiddenInputs = '<input type="hidden" name="AllMovesString" value="' + AllMovesString +'">'
@@ -118,7 +117,6 @@ def index():
         HiddenInputs += '<input type="hidden" name="MetricDisplay" value="' + MetricDisplay +'">'
         HiddenInputs += '<input type="hidden" name="SnarkLevel" value="' + SnarkLevel +'">'
         HiddenInputs += '<input type="hidden" name="RemarkFreq" value="' + RemarkFreq +'">'
-        HiddenInputs += '<input type="hidden" name="RemarkType" value="' + RemarkType +'">'
         HiddenInputs += '<input type="hidden" name="GameCondition" value="' + GameCondition +'">'
     
     #call outside-----------------------
@@ -128,6 +126,9 @@ def index():
     ThirdPartOfPage = ht.htmlPagetemplate(3)
     FourthPartOfPage = ht.htmlPagetemplate(4)
     FifthPartOfPage = ht.htmlPagetemplate(5)
+    if GameCondition and "end" in GameCondition:
+        ThirdPartOfPage = ht.htmlPagetemplate(8)
+ 
     
     #---------------------------------------
     #call boardimage ~ 64 times
@@ -142,7 +143,7 @@ def index():
             # Debug print
     #        print(f"{space_address} -> {PiecePictureName}")
     
-            FirstPartOfPage += f'<td><img src="https://raw.githubusercontent.com/Sundeep-Parmar-UC/608-project-ver1/refs/heads/main/{PiecePictureName}" width="100" alt="Chess Square {space_address}"></td>'
+            FirstPartOfPage += f'<td><img src="https://raw.githubusercontent.com/Sundeep-Parmar-UC/608-project-ver1/refs/heads/main/{PiecePictureName}" width="65" alt="Chess Square {space_address}"></td>'
         FirstPartOfPage += '</tr>'
     
     FirstPartOfPage += '<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td></tr>'
@@ -180,7 +181,7 @@ def index():
         
         MetricDecision += '</td></tr>'
     
-    elif MetricDisplay == "1":
+    elif MetricDisplay == "1" and Metrics:
         #display metrics
         MetricDecision = f'<tr><td colspan="2" style="border: 2px solid #555;">Number of games considered: {Metrics[0]}</td>'
         MetricDecision += '<td colspan="2" style="border: 2px solid #555;">Bot Moves considered:<br>'
@@ -191,6 +192,7 @@ def index():
         
         for row in Metrics[2]:
             MetricDecision += f'Move: {row[0]} # of games: {row[1]}<br>'
+
         
         MetricDecision += '</td></tr>'
     

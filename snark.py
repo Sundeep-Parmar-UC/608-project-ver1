@@ -7,8 +7,6 @@
 dict_RemarkType = {
     "start": "This is the first pair moves of the game.",
     "general_move": "This is a normal mid‑game move.",
-    "black_won": "Black has won the game.",
-    "unique_position": "This move leads to a rare or unusual board position.",
     "illegal_move": "The move played is illegal.",
     "Wend": "The human player won the game, AI is defeated",
     "Bend": "AI has won the game",
@@ -27,7 +25,7 @@ dict_SnarkLevel= {
 #connect to Google Gemini API
 import google.generativeai as genai
 
-genai.configure(api_key="cccccccccccccccccccccccccc")
+genai.configure(api_key="XXXXXXXXXXXX")
 model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
 
 # return remark text

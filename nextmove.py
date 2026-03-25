@@ -23,11 +23,12 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
 
     # construction user move with Moves string
     #count number of moves in
-    move_pairs = len(re.findall(r'\d+\.', MovesString))
-    move_pairs += 1
-    if(len(MovesString) == 0):
+    move_pairs = 1
+    if not MovesString:
             MovesString = str(move_pairs) + ". " + UserMove
     else:
+        move_pairs = len(re.findall(r'\d+\.', MovesString))
+        move_pairs += 1
         MovesString = MovesString + " " + str(move_pairs) + ". " + UserMove
 
     #print(MovesString) 
@@ -126,7 +127,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     #build metric
     # num of games to consider
     NumofGames = len(records)
-    print(f"Total Games found: {len(records)}")
+    #print(f"Total Games found: {len(records)}")
     AllPossiblemoves = []
     BotMove = ""
     Metrics = []
@@ -183,7 +184,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     
         #select highest percentage move as bot move
         BotMove = MovesConsideredMetric[0][0].strip()
-        print("selected BotMove: ",BotMove)
+        #print("selected BotMove: ",BotMove)
         
         if(BotMove == ""):
             GameCondition = "Wend" 
@@ -231,7 +232,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     #    print("done board update")
     
     #    print("BotMove: ",BotMove)
-        print("Metrics: ",Metrics)
+    #    print("Metrics: ",Metrics)
     #    print("BoardLayout: ",BoardLayout)
 
     return BotMove,Metrics,BoardLayout,GameCondition
