@@ -103,12 +103,12 @@ def index():
             AllMovesString += f" {move_numbers}. {UserMove} {BotMove}"
 
         #call snark remark
-        if(SnarkLevel != "off" and GameCondition == "middle"):
-            if((RemarkFreq == 10 and move_pairs % 2 == 0) or (RemarkFreq == 4 and move_pairs % 4 == 0) or (RemarkFreq == 1)):
+        should_remark = ((RemarkFreq == 10 and move_pairs % 2 == 0) or (RemarkFreq == 4 and move_pairs % 4 == 0) or (RemarkFreq == 1))
+        
+        if SnarkLevel != "off" and GameCondition == "middle" and should_remark:
                 RemarkText = sn.snark(RemarkType,SnarkLevel,move_numbers)
- 
         else:
-            RemarkText = sn.snark(GameCondition,SnarkLevel,move_numbers)
+                RemarkText = sn.snark(GameCondition,SnarkLevel,move_numbers)
             
         #--------------------------------------- (build hidden variables)
         
@@ -168,15 +168,15 @@ def index():
     MetricDecision = ""
     if MetricDisplay == "0" and len(AllMovesString) == 0:
         #added questionaire for metrics
-        MetricDecision = '<tr><td colspan="2" style="border: 2px solid #555;">Display Metrics:<br><BIG><input type="radio" id="on" name="MetricDisplay" value="1" checked><label for="on">On</label>'
-        MetricDecision += '<input type="radio" id="off" name="MetricDisplay" value="0"><label for="off">Off</label></BIG>'
-        MetricDecision += '</td><td style="border: 2px solid #555;">Bot Difficulty: <br><select id="BotDiff" name="BotDifficulty" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">'
+        MetricDecision = '<tr><td colspan="2" style="border: 2px solid #555;">Display Metrics:<br><BIG><input type="radio" id="on" name="MetricDisplay" value="1"><label for="on">On</label>'
+        MetricDecision += '<input type="radio" id="off" name="MetricDisplay" value="0" checked><label for="off">Off</label></BIG>'
+        MetricDecision += '</td><td style="border: 2px solid #555;">Bot Difficulty: <br><select id="BotDiff" name="BotDifficulty" style="font-size: 24px; padding-left: 20px; padding-right: 20px;">'
         MetricDecision += '<option value="1000">Easy</option><option value="1500" selected>Medium</option><option value="2500">Hard</option><option value="5000">Grand Master</option></select>'
         
-        MetricDecision += '</td><td style="border: 2px solid #555;">Bot Response Style:<br><select id="Snark" name="SnarkLevel" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">'
+        MetricDecision += '</td><td style="border: 2px solid #555;">Bot Response Style:<br><select id="Snark" name="SnarkLevel" style="font-size: 24px; padding-left: 20px; padding-right: 20px;">'
         MetricDecision += '<option value="off">Off</option><option value="neutral" selected>Neutral</option><option value="positive">Encouraging</option><option value="evil">Snob</option></select>'
     
-        MetricDecision += '</td><td colspan="2" style="border: 2px solid #555;">Bot Response Frequency:<br><select id="Freq" name="RemarkFreq" style="font-size: 34px; padding-left: 20px; padding-right: 20px;">'
+        MetricDecision += '</td><td colspan="2" style="border: 2px solid #555;">Bot Response Frequency:<br><select id="Freq" name="RemarkFreq" style="font-size: 24px; padding-left: 20px; padding-right: 20px;">'
         MetricDecision += '<option value="10">Low</option><option value="4" selected>Medium</option><option value="1">High</option></select>'
         
         MetricDecision += '</td></tr>'
@@ -208,4 +208,4 @@ def index():
     return BuildPage
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)

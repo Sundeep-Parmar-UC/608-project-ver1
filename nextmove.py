@@ -20,10 +20,11 @@ import re
 from collections import Counter
 
 def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondition):
-
+    
     # construction user move with Moves string
     #count number of moves in
     move_pairs = 1
+    SavedMoveString = MovesString
     if not MovesString:
             MovesString = str(move_pairs) + ". " + UserMove
     else:
@@ -116,7 +117,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
 #    SQLQuery = "SELECT * FROM moves WHERE BlackELO <= " + BotDifficulty + " " + SQLStatementEnd
     SQLQuery = "SELECT * FROM moves WHERE  " + SQLStatementEnd
      
-    print(SQLQuery)    
+    #print(SQLQuery)    
 
     # obtain list of all next moves
     SQLconnect.execute(SQLQuery)
@@ -135,6 +136,18 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     PossibleMovesConsideredMetric = []
     if(NumofGames == 0):
         GameCondition = "Uend" 
+        #Reset board to last displayed
+        #1. split input  PGN-style MovesString into tokens
+        if SavedMoveString:
+            tokens2 = SavedMoveString.split()
+            
+            #2. Skip move numbers "1.", "2." etc.
+            moves2 = [t for t in tokens2 if not t.endswith(".")]
+        
+            #3. Build BoardLayout 
+            for idx, move in enumerate(moves2):
+                BoardLayout = bd.board(move, BoardLayout)
+        
     else:
         GameCondition = "middle"         
         #decide next move
@@ -218,8 +231,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
         #2. Skip move numbers "1.", "2." etc.
         moves = [t for t in tokens if not t.endswith(".")]
     
-        #3. Build movelist html-ready MoveTable
-        MoveTable = []
+        #3. Build BoardLayout
         for idx, move in enumerate(moves):
             BoardLayout = bd.board(move, BoardLayout)
     #        print(f"BoardLayout = bd.board(UserMove, BoardLayout): BoardLayout = bd.board({move}, BoardLayout")

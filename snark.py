@@ -25,8 +25,12 @@ dict_SnarkLevel= {
 #connect to Google Gemini API
 import google.generativeai as genai
 
-genai.configure(api_key="XXXXXXXXXXXX")
-model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
+models = ["gemini-2.5-flash","gemini-2.0-flash-lite","gemini-flash-lite-latest","gemini-pro-latest","gemini-2.5-flash-lite","gemini-2.5-flash-lite-preview-09-2025","gemini-3.1-flash-lite-preview"]
+
+selected_model = random.choice(models)
+
+genai.configure(api_key="XXXXXXXXXXX")
+model = genai.GenerativeModel(selected_model)
 
 # return remark text
 def snark(RemarkType, SnarkLevel, MoveNumber):
