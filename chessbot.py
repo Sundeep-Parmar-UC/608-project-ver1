@@ -123,6 +123,7 @@ def index():
     #obtain webpage base template
     FirstPartOfPage = ht.htmlPagetemplate(1)
     SecondPartOfPage = ht.htmlPagetemplate(2)
+    SecondSecondPartOfPage = ht.htmlPagetemplate(25)
     ThirdPartOfPage = ht.htmlPagetemplate(3)
     FourthPartOfPage = ht.htmlPagetemplate(4)
     FifthPartOfPage = ht.htmlPagetemplate(5)
@@ -184,7 +185,7 @@ def index():
     elif MetricDisplay == "1" and Metrics:
         #display metrics
         MetricDecision = f'<tr><td colspan="2" style="border: 2px solid #555;">Number of games considered: {Metrics[0]}</td>'
-        MetricDecision += '<td colspan="2" style="border: 2px solid #555;">Bot Moves considered:<br>'
+        MetricDecision += '<td colspan="3" style="border: 2px solid #555;">Bot Moves considered:<br>'
         for row in Metrics[1]:
             MetricDecision += f'Move: {row[0]} >> {row[1]*100:.2f}%<br>'
         
@@ -193,17 +194,22 @@ def index():
         for row in Metrics[2]:
             MetricDecision += f'Move: {row[0]} # of games: {row[1]}<br>'
 
-        
         MetricDecision += '</td></tr>'
+        for row in Metrics[3]:
+            MetricDecision += f'<tr><td colspan="2" style="border: 2px solid #555;">File: {row[0]} </td><td colspan="2" style="border: 2px solid #555;"> Total Games: {row[1]} </td><td colspan="2" style="border: 2px solid #555;"> Ingest Games : {row[2]} </td><td style="border: 2px solid #555;"> File Size: {row[3]} </td></tr>'
+
+    elif "end" in GameCondition and Metrics:
+        for row in Metrics[3]:
+            MetricDecision += f'<tr><td colspan="2" style="border: 2px solid #555;">File: {row[0]} </td><td colspan="2" style="border: 2px solid #555;"> Total Games: {row[1]} </td><td colspan="2" style="border: 2px solid #555;"> Ingest Games : {row[2]} </td><td style="border: 2px solid #555;"> File Size: {row[3]} </td></tr>'
     
     FourthPartOfPage = HiddenInputs + MetricDecision + FourthPartOfPage
 
     #---------------------------------------
-    
-    FifthPartOfPage = RemarkText + FifthPartOfPage
+
+    SecondSecondPartOfPage = SecondSecondPartOfPage + '<p style="color: red; font-style: italic;font-size: 16px;">' + RemarkText + '</p><br>'
     
     #output webpage raw
-    BuildPage = FirstPartOfPage + SecondPartOfPage + ThirdPartOfPage + FourthPartOfPage + FifthPartOfPage
+    BuildPage = FirstPartOfPage + SecondPartOfPage + SecondSecondPartOfPage + ThirdPartOfPage + FourthPartOfPage + FifthPartOfPage
     
     return BuildPage
 

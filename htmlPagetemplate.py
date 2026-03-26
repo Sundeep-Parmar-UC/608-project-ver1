@@ -25,14 +25,16 @@ def  htmlPagetemplate(section):
     </tr>
   </thead>
   <tbody>"""
-
-    elif section == 3:
+    elif section == 25:
         Htmlsection = """ </tbody>
         </table>
         </td></tbody></table>	
-        <hr>
+        <hr>"""
+        
+    elif section == 3:
+        Htmlsection = """
         	<form method="POST"><table style="font-size: 16px; background-color: black; color: white; margin: 0 auto; width: 50%; border-collapse: collapse; text-align: center;"><tbody><tr>
-        	<td rowspan="2" style="font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;">Next Move:</td>
+        	<td rowspan="2" colspan="2" style="font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;">Next Move:</td>
         	<td style="border: 2px solid #555;padding: 16px;">
         	Source Column </td>
         	<td style="border: 2px solid #555;padding: 16px;">
@@ -41,7 +43,7 @@ def  htmlPagetemplate(section):
         	Destination Column </td>
             <td style="border: 2px solid #555;padding: 16px;">
         	Destination Row </td>
-        		<td rowspan="2" style="font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" name="action" value="calculate" style="font-size: 16px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">
+        		<td rowspan="2" style=" width: 200px; font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" name="action" value="calculate" style="font-size: 16px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;">
           Submit </button></td>
         	</tr><tr>
         	<td style="border: 2px solid #555;">
@@ -97,20 +99,16 @@ def  htmlPagetemplate(section):
         
         	</tr>"""
     elif section == 8:
-        Htmlsection = """ </tbody>
-        </table>
-        </td></tbody></table>	
-        <hr>
+        Htmlsection = """
         	<form method="POST"><table style="font-size: 16px; background-color: black; color: white; margin: 0 auto; width: 50%; border-collapse: collapse; text-align: center;"><tbody><tr>
-        	<td rowspan="5"style="font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;">Created by G5-Rita Group: Michael, Sundeep, Yu Ling</td>
-        	<td style="font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" name="action" style="font-size: 16px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;" value="reset">
+        	<td colspan="5" style=" width: 300px; font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;">Created by G5-Rita Group: Michael, Sundeep, Yu Ling</td>
+        	<td colspan="3" style="font-size: 24px;  border: 2px solid #555;  background-color: black; color: white;padding-left: 50px; padding-right: 50px;"><button type="submit" name="action" style="font-size: 16px; background-color: black; color: gold; border: 2px solid gold; padding: 15px 30px; cursor: pointer; border-radius: 8px; font-weight: bold; margin: 20px auto; display: block;" value="reset">
           Reset Game </button></td></tr>"""
     elif section == 4:
         Htmlsection = """</tbody></table></form>
-        <p style="color: red; font-style: italic;font-size: 16px;">
         """
     elif section == 5:
-        Htmlsection = """</p><br><br><br><br></div>
+        Htmlsection = """<BR><BR><BR><BR></div>
         	
         </body>
         </html>

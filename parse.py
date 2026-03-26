@@ -8,7 +8,7 @@ import mysql.connector
 def Parse(uncompressFilePath,SQLconnect):
 
     #Set variable to stop collecting events after # lines read
-    Stop_loading_data_after_lines = 500000000
+    Stop_loading_data_after_lines = 5000000000
     
     # Define the desired column names: WhiteELO, BlackELO, Opening, Site, Termination, 
 
@@ -32,7 +32,7 @@ def Parse(uncompressFilePath,SQLconnect):
 
             line = file.readline() #read one line from data file
             LinesTotalRead+=1 # increment lines read
-            if LinesTotalRead % 10000 == 0:
+            if LinesTotalRead % 100000 == 0:
                 print("LinesTotalRead: ",LinesTotalRead)
             
             if not line:  # Check if the line is an empty string, indicating EOF
@@ -50,7 +50,6 @@ def Parse(uncompressFilePath,SQLconnect):
                 TerminationData = line[14:(15+line[15:].find("\""))]
             elif line.startswith('1. '): #Found Moves info
                 MovesData = line.strip() # Use the entire line for the Moves column    
-
                 if MoveValidation(MovesData):
                     MoveLineGathered = True  #found game with natural checkmate
 #                   Log += "Found Natural Checkmate game:<br>"
@@ -67,7 +66,6 @@ def Parse(uncompressFilePath,SQLconnect):
                     game_id_returned,success_bit = lg.LoadGame(CollectedEvent,SQLconnect)
 #                    Log += "game_id_returned: " + str(game_id_returned) + "<br>"
 #                    Log += "success_bit: " + str(success_bit) + "<br>"
-
                     move_array,success_move_bit = pm.ParserMove(MovesData)
 #                    Log += "MovedCount:" + str(move_array[0]) + "<br>"
 #                    Log += "Set5:" + move_array[1] + "<br>"
@@ -101,7 +99,7 @@ def MoveValidation(moves):
     if re.search(r"# [01]-[01]$", moves):
         ApprovedMoves = True
     
-    if "=" in moves:
-        ApprovedMoves = False
+#    if "=" in moves:
+#        ApprovedMoves = False
 
     return ApprovedMoves
