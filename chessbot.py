@@ -124,7 +124,12 @@ def index():
     FirstPartOfPage = ht.htmlPagetemplate(1)
     SecondPartOfPage = ht.htmlPagetemplate(2)
     SecondSecondPartOfPage = ht.htmlPagetemplate(25)
-    ThirdPartOfPage = ht.htmlPagetemplate(3)
+    if GameCondition and "end" not in GameCondition:
+        metric_val = Metrics[2][0][0] if 'Metrics' in locals() or 'Metrics' in globals() else "    "
+    else:
+        metric_val = "    " 
+        
+    ThirdPartOfPage = ht.htmlPagetemplate(3,metric_val)
     FourthPartOfPage = ht.htmlPagetemplate(4)
     FifthPartOfPage = ht.htmlPagetemplate(5)
     if GameCondition and "end" in GameCondition:
@@ -132,6 +137,7 @@ def index():
  
     
     #---------------------------------------
+
     #call boardimage ~ 64 times
     for row in range(8, 0, -1):  # Corrected: start at 8, stop at 1, step -1
         FirstPartOfPage += '<tr><td>' + str(row) + "</td>"
@@ -206,7 +212,7 @@ def index():
 
     #---------------------------------------
 
-    SecondSecondPartOfPage = SecondSecondPartOfPage + '<p style="color: red; font-style: italic;font-size: 16px;">' + RemarkText + '</p><br>'
+    SecondSecondPartOfPage = SecondSecondPartOfPage + '<p style="color: white; font-style: italic;font-size: 24px;">' + RemarkText + '</p><br>'
     
     #output webpage raw
     BuildPage = FirstPartOfPage + SecondPartOfPage + SecondSecondPartOfPage + ThirdPartOfPage + FourthPartOfPage + FifthPartOfPage
