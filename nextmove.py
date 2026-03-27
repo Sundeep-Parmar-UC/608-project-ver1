@@ -115,7 +115,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
         SQLStatementEnd += "AND Set_Remain LIKE '" + Set_Remain + "%' "
 
 #    SQLQuery = "SELECT * FROM moves WHERE BlackELO <= " + BotDifficulty + " " + SQLStatementEnd
-    SQLQuery = "SELECT * FROM moves WHERE  " + SQLStatementEnd
+    SQLQuery = "SELECT * FROM moves WHERE  " + SQLStatementEnd + " ORDER BY BlackELO DESC"
      
     #print(SQLQuery)    
 
@@ -147,7 +147,16 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
             #3. Build BoardLayout 
             for idx, move in enumerate(moves2):
                 BoardLayout = bd.board(move, BoardLayout)
-        
+
+            BoardLayout = bd.board(UserMove, BoardLayout)
+             ## obtain list of files already loaded
+            records = []
+            sqlstatement = "SELECT filename,NumGamesTotal,NumGamesIngested,File_size FROM files ORDER by id DESC"
+            SQLconnect.execute(sqlstatement)
+            records = SQLconnect.fetchall()
+            
+            Metrics = [NumofGames,[],[],records]
+           
     else:
         GameCondition = "middle"         
         #decide next move
@@ -217,8 +226,15 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
         
         if(len(PossibleMovesConsideredMetric) == 0):
              GameCondition = "Bend"
+
+        ## obtain list of files already loaded
+        records = []
+        sqlstatement = "SELECT filename,NumGamesTotal,NumGamesIngested,File_size FROM files ORDER by id DESC"
+        SQLconnect.execute(sqlstatement)
+        records = SQLconnect.fetchall()
+
         
-        Metrics = [NumofGames,MovesConsideredMetric,PossibleMovesConsideredMetric]
+        Metrics = [NumofGames,MovesConsideredMetric,PossibleMovesConsideredMetric,records]
 
 
         #call baord update function  

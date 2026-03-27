@@ -12,7 +12,7 @@ def ParserMove(movesPGN):
     movesPGN = re.sub(r"\{ \[%eval \d\.\d\d\] \}", "", movesPGN)
     movesPGN = re.sub(r"\{ \[%clk \d\.\d\d\] \}", "", movesPGN)
     movesPGN = movesPGN.replace("...", ".")
-    
+
     # Use regex to extract moves and move counts
     #moves_Piece_array = re.findall(r'\d+\.\s+([^\s]+)\s+([^\s]+)', moves)
 
