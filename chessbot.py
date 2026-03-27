@@ -1,6 +1,6 @@
 #import mysql.connector
 #from mysql.connector import Error
-ConnectString = "mysql -h database-1.clqxqhhe6wft.us-east-1.rds.amazonaws.com -P 3306 -u admin -p'<Enter_DB_Password>' --ssl-verify-server-cert  --ssl-ca=/certs/global-bundle.pem mysql"
+ConnectString = "mysql -h database-1.cfvrvxxcdsku.ca-west-1.rds.amazonaws.com -P 3306 -u admin -p --ssl-mode=VERIFY_IDENTITY --ssl-ca=./global-bundle.pem"
 
 host=ConnectString[9:60]
 user='admin'
@@ -103,12 +103,20 @@ def index():
             AllMovesString += f" {move_numbers}. {UserMove} {BotMove}"
 
         #call snark remark
-        should_remark = ((RemarkFreq == 10 and move_pairs % 2 == 0) or (RemarkFreq == 4 and move_pairs % 4 == 0) or (RemarkFreq == 1))
-        
-        if SnarkLevel != "off" and GameCondition == "middle" and should_remark:
+        should_remark = move_numbers % int(RemarkFreq)
+
+        if SnarkLevel != "off" and GameCondition == "middle" and should_remark == 0:
                 RemarkText = sn.snark(RemarkType,SnarkLevel,move_numbers)
-        else:
+        elif "end" in GameCondition and SnarkLevel != "off": 
                 RemarkText = sn.snark(GameCondition,SnarkLevel,move_numbers)
+        elif "end" in GameCondition:
+                if(GameCondition == "Bend"):
+                    RemarkText = "Game Ends with Black Checkmate"
+                elif(GameCondition == "Wend"):
+                    RemarkText = "Game Ends with White Checkmate"
+                else:
+                    RemarkText = "Game Ends with unique position"
+
             
         #--------------------------------------- (build hidden variables)
         
@@ -128,13 +136,14 @@ def index():
         metric_val = Metrics[2][0][0] if 'Metrics' in locals() or 'Metrics' in globals() else "    "
     else:
         metric_val = "    " 
-        
-    ThirdPartOfPage = ht.htmlPagetemplate(3,metric_val)
+
     FourthPartOfPage = ht.htmlPagetemplate(4)
     FifthPartOfPage = ht.htmlPagetemplate(5)
+
     if GameCondition and "end" in GameCondition:
         ThirdPartOfPage = ht.htmlPagetemplate(8)
- 
+    else: 
+        ThirdPartOfPage = ht.htmlPagetemplate(3,metric_val)
     
     #---------------------------------------
 

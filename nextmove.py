@@ -128,6 +128,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     #build metric
     # num of games to consider
     NumofGames = len(records)
+    #print("NumofGames: ",NumofGames)
     #print(f"Total Games found: {len(records)}")
     AllPossiblemoves = []
     BotMove = ""
@@ -155,7 +156,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
             SQLconnect.execute(sqlstatement)
             records = SQLconnect.fetchall()
             
-            Metrics = [NumofGames,[],[],records]
+            Metrics = [NumofGames,[],[],records] 
            
     else:
         GameCondition = "middle"         
@@ -164,31 +165,39 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
     
         for i in range(NumofGames):
             Possiblemoves = " ".join(str(records[i][j]) for j in range(1, 9) if records[i][j] is not None)
-            if move_pairs < 6:
+                
+            if Set5 != "":
                 # Added .strip() to clean up leading spaces
-                raw_move = records[i][1].removeprefix(Set5)
-                Possiblemoves = Possiblemoves.removeprefix(Set5)
-            elif move_pairs < 11:
-                raw_move = records[i][2].removeprefix(Set10)
-                Possiblemoves = Possiblemoves.removeprefix(Set10)
-            elif move_pairs < 16:
-                raw_move = records[i][3].removeprefix(Set15)
-                Possiblemoves = Possiblemoves.removeprefix(Set15)
-            elif move_pairs < 21:
-                raw_move = records[i][4].removeprefix(Set20)
-                Possiblemoves = Possiblemoves.removeprefix(Set20)
-            elif move_pairs < 31:
-                raw_move = records[i][5].removeprefix(Set30)
-                Possiblemoves = Possiblemoves.removeprefix(Set30)
-            elif move_pairs < 41:
-                raw_move = records[i][6].removeprefix(Set40)
-                Possiblemoves = Possiblemoves.removeprefix(Set40)
-            elif move_pairs < 71:
-                raw_move = records[i][7].removeprefix(Set70)
-                Possiblemoves = Possiblemoves.removeprefix(Set70)
-            else:
-                raw_move = records[i][8].removeprefix(Set_Remain) # Fixed variable name
-                Possiblemoves = Possiblemoves.removeprefix(Set_Remain)
+                raw_move = records[i][1].removeprefix(Set5).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set5).strip()
+       
+            if Set10 != "":
+                raw_move = records[i][2].removeprefix(Set10).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set10).strip()
+
+            if Set15 != "":
+                raw_move = records[i][3].removeprefix(Set15).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set15).strip()
+
+            if Set20 != "":
+                raw_move = records[i][4].removeprefix(Set20).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set20).strip()
+        
+            if Set30 != "":
+                raw_move = records[i][5].removeprefix(Set30).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set30).strip()
+
+            if Set40 != "":
+                raw_move = records[i][6].removeprefix(Set40).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set40).strip()
+       
+            if Set70 != "":
+                raw_move = records[i][7].removeprefix(Set70).strip()
+                Possiblemoves = Possiblemoves.removeprefix(Set70).strip()
+
+            if Set_Remain != "":
+                raw_move = records[i][8].removeprefix(Set_Remain).strip() # Fixed variable name
+                Possiblemoves = Possiblemoves.removeprefix(Set_Remain).strip()
 
             # Clean up and append
             BotMovestoConsider.append(raw_move.strip()[0:4])
@@ -213,12 +222,13 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
 
         NextPossibleMove = []
         for NextMoveRow in AllPossiblemoves:
-            if(NextMoveRow[0:4].strip() == BotMove):
-                NextPossibleMove.append(NextMoveRow[NextMoveRow.find(".")+2:NextMoveRow.find(".")+6])
+            if(len(NextMoveRow) > 5):
+                if(NextMoveRow[0:4].strip() == BotMove):
+                    NextPossibleMove.append(NextMoveRow[NextMoveRow.find(".")+2:NextMoveRow.find(".")+6])
 
         # 1. Get histogram of all next moves
         Possiblemove_counts = Counter(NextPossibleMove)
-        
+
         # 2. Collect next moves into metric array with percentage
         PossibleMovesConsideredMetric = []
         for move2, count2 in Possiblemove_counts.most_common():
@@ -250,17 +260,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
         #3. Build BoardLayout
         for idx, move in enumerate(moves):
             BoardLayout = bd.board(move, BoardLayout)
-    #        print(f"BoardLayout = bd.board(UserMove, BoardLayout): BoardLayout = bd.board({move}, BoardLayout")
-    #        for i in range(8):
-    #            print(BoardLayout[i])
-    
-    #    print(f"BoardLayout = bd.board(UserMove, BoardLayout): BoardLayout = bd.board({BotMove}, BoardLayout")
+
         BoardLayout = bd.board(BotMove, BoardLayout)
-        
-    #    print("done board update")
-    
-    #    print("BotMove: ",BotMove)
-    #    print("Metrics: ",Metrics)
-    #    print("BoardLayout: ",BoardLayout)
 
     return BotMove,Metrics,BoardLayout,GameCondition
