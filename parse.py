@@ -98,7 +98,6 @@ def MoveValidation(moves):
 
     if re.search(r"# [01]-[01]$", moves):
         ApprovedMoves = True
-    
 #    if "=" in moves:
 #        ApprovedMoves = False
 

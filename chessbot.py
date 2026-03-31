@@ -190,7 +190,7 @@ def index():
         MetricDecision += '<option value="1000">Easy</option><option value="1500" selected>Medium</option><option value="2500">Hard</option><option value="5000">Grand Master</option></select>'
         
         MetricDecision += '</td><td style="border: 2px solid #555;">Bot Response Style:<br><select id="Snark" name="SnarkLevel" style="font-size: 24px; padding-left: 20px; padding-right: 20px;">'
-        MetricDecision += '<option value="off">Off</option><option value="neutral" selected>Neutral</option><option value="positive">Encouraging</option><option value="evil">Snob</option></select>'
+        MetricDecision += '<option value="off" checked>Off</option><option value="neutral" disabled>Neutral</option><option value="positive" disabled>Encouraging</option><option value="evil" disabled>Snob</option></select>'
     
         MetricDecision += '</td><td colspan="2" style="border: 2px solid #555;">Bot Response Frequency:<br><select id="Freq" name="RemarkFreq" style="font-size: 24px; padding-left: 20px; padding-right: 20px;">'
         MetricDecision += '<option value="10">Low</option><option value="4" selected>Medium</option><option value="1">High</option></select>'
@@ -229,4 +229,4 @@ def index():
     return BuildPage
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+     app.run(host='0.0.0.0', port=5000, debug=True)

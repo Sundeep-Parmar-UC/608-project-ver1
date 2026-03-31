@@ -152,7 +152,7 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
             BoardLayout = bd.board(UserMove, BoardLayout)
              ## obtain list of files already loaded
             records = []
-            sqlstatement = "SELECT filename,NumGamesTotal,NumGamesIngested,File_size FROM files ORDER by id DESC"
+            sqlstatement = "SELECT filename,FORMAT(NumGamesTotal, 0) AS NumGamesTotal,FORMAT(NumGamesIngested, 0) AS NumGamesIngested,FORMAT(File_size, 0) AS File_size FROM files ORDER BY filename DESC"
             SQLconnect.execute(sqlstatement)
             records = SQLconnect.fetchall()
             
@@ -239,10 +239,9 @@ def nextmove(BoardLayout,MovesString,UserMove,SQLconnect,BotDifficulty,GameCondi
 
         ## obtain list of files already loaded
         records = []
-        sqlstatement = "SELECT filename,NumGamesTotal,NumGamesIngested,File_size FROM files ORDER by id DESC"
+        sqlstatement = "SELECT filename,FORMAT(NumGamesTotal, 0) AS NumGamesTotal,FORMAT(NumGamesIngested, 0) AS NumGamesIngested,FORMAT(File_size, 0) AS File_size FROM files ORDER BY filename DESC"
         SQLconnect.execute(sqlstatement)
         records = SQLconnect.fetchall()
-
         
         Metrics = [NumofGames,MovesConsideredMetric,PossibleMovesConsideredMetric,records]
 
