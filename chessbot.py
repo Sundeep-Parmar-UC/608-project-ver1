@@ -158,8 +158,7 @@ def index():
             
             # Debug print
     #        print(f"{space_address} -> {PiecePictureName}")
-    
-            FirstPartOfPage += f'<td><img src="https://raw.githubusercontent.com/Sundeep-Parmar-UC/608-project-ver1/refs/heads/main/{PiecePictureName}" width="65" alt="Chess Square {space_address}"></td>'
+            FirstPartOfPage += f'<td><img src="/static/{PiecePictureName}" width="65" alt="Chess Square {space_address}"></td>'
         FirstPartOfPage += '</tr>'
     
     FirstPartOfPage += '<tr><td></td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td></tr>'
@@ -229,4 +228,4 @@ def index():
     return BuildPage
 
 if __name__ == '__main__':
-     app.run(host='0.0.0.0', port=5000, debug=True)
+     app.run(host='0.0.0.0', port=5000)
